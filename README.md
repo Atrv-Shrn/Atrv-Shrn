@@ -1,4 +1,4 @@
-# Atharva Sheoran
+# Atrv-Shrn
 
 **AI Engineer** | AI agents, RAG pipelines, agentic workflows, LLM fine-tuning, n8n
 **Stack:** LangChain · LangGraph · LlamaIndex · MCP · Qdrant · FastAPI · Docker
