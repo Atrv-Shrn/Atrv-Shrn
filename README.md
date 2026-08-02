@@ -1,10 +1,16 @@
 # Atharva Sheoran
 
-**AI Engineer** — I build autonomous agent systems and the eval harnesses that prove they work.
+**AI Engineer** | AI agents, RAG pipelines, agentic workflows, LLM fine-tuning, n8n
+**Stack:** LangChain · LangGraph · LlamaIndex · MCP · Qdrant · FastAPI · Docker
 
-An agent trusted with commit access that no reasoning failure can turn destructive. A question-answering service graded on knowing when *not* to answer. Everything below is self-hosted, documented, and measured — and every README explains why it's built that way, including which parts are mine and which the framework's.
+What I build:
 
-🟢 **Open to part-time contract work** — 20–28 hrs/week, async-first, with a daily overlap window covering EU afternoons and US-East mornings.
+- AI agents that take real actions, with guardrails in the tools rather than the prompt
+- RAG pipelines that cite their sources and abstain instead of guessing
+- Agentic workflows and always-on ops agents
+- Evals: golden sets, adversarial suites, tracing
+
+🟢 **Open to full-time, contract or part-time work.** Up to 40 hrs/week, async-first, daily overlap window covering EU afternoons and US-East mornings.
 
 ---
 
@@ -12,37 +18,41 @@ An agent trusted with commit access that no reasoning failure can turn destructi
 
 ### 📚 [Obsidian-Librarian](https://github.com/Atrv-Shrn/Obsidian-Librarian)
 
-An AI librarian for your notes. Ask it anything about your Obsidian vault and it answers from the actual files with clickable `[[wikilink]]` citations — or tells you it doesn't know. Ask it to *do* something and it drafts the change, shows you, and waits for your yes.
+RAG pipeline and LangGraph agent over an Obsidian vault, in one container. Answers from the actual files with clickable `[[wikilink]]` citations, or says it does not know. Every edit is proposed for confirmation first; the retrieval half physically cannot write.
 
-A RAG pipeline and a LangGraph agent welded together in one container. The retrieval half physically cannot write; every edit is proposed for confirmation first.
+210 unit tests. 10/10 on the golden set at 0.97 faithfulness. 15 adversarial scenarios survived, including a defeated prompt injection.
 
-**▶️ [Watch the demo](https://github.com/Atrv-Shrn/Obsidian-Librarian/blob/main/assets/demo.mp4)** · `LangGraph` `LlamaIndex` `Qdrant` `MCP` `Docker`
+**▶️ [Watch the demo](https://github.com/Atrv-Shrn/Obsidian-Librarian/blob/main/assets/demo.mp4)** · `LangGraph` `LlamaIndex` `Qdrant` `Redis` `SQLite` `MCP` `Docker`
 
 ### 🩹 [MendBot](https://github.com/Atrv-Shrn/MendBot)
 
-A self-hosted GitHub App that reviews your pull requests as an autonomous agent and pushes safe fixes when it finds them. No fixed pipeline — it decides for itself whether to read more context, comment, fix, or leave the code alone.
+Self-hosted GitHub App. Autonomous PR review agent that pushes safe fixes. No fixed pipeline: it decides whether to read more context, comment, fix, or leave the code alone.
 
-Safe to hand commit access because safety lives in the tools, not the prompt: it edits only files already in the diff, on the PR's own branch, under line caps — and edits land as one commit at the very end, so a crashed run writes nothing. Graded against a golden set of real PRs with known answers: **4/4 at baseline** on the fix-or-don't decision, including declining two fixes that looked safe but weren't.
+Safe to give commit access because safety lives in the tools, not the prompt. Edits only files already in the diff, on the PR's own branch, under line caps, landed as one commit at the end, so a crashed run writes nothing.
+
+4/4 at baseline on a golden set of real PRs, including two correct declines on fixes that looked safe.
 
 `LangGraph` `LangChain` `Langfuse` `FastAPI` `Docker`
 
 ### 🔍 [Anthropic-RAG](https://github.com/Atrv-Shrn/Anthropic-RAG)
 
-Grounded Q&A over the docs, issues and PRs of Anthropic's two SDK repos, refreshed hourly and served to AI agents over MCP.
+Grounded Q&A over the docs, issues and PRs of Anthropic's two SDK repos. Hourly incremental ingestion. Served to AI agents over MCP.
 
-Built to **abstain** — when the sources can't support an answer it refuses instead of guessing, and the eval set includes out-of-scope questions to measure exactly that. Pairs semantic with keyword search, because developer questions hinge on the exact tokens vector search blurs. Runs without a GPU.
+Abstains when the sources cannot support an answer. Hybrid dense and sparse retrieval with reranking, because developer questions hinge on exact tokens. Three stores: Qdrant for fused vectors, Redis for verbatim markdown so citations are exact, SQLite for sync state. Runs without a GPU.
 
-`LlamaIndex` `Qdrant` `Redis` `MCP` `RAGAS` `Docker`
+`LlamaIndex` `Qdrant` `Redis` `SQLite` `MCP` `Docker`
 
 ### 🦅 [Kestrel](https://github.com/Atrv-Shrn/Kestrel-Openclaw) & 🌌 [Cosmo](https://github.com/Atrv-Shrn/Cosmo-Openclaw)
 
-Agents that extend themselves. When Kestrel hits a task it can't do yet, it finds or builds the missing tool and keeps it for next time, delegating every code change to a coding sub-agent. Cosmo runs proactive startup ops on a heartbeat, with skills that evolve as it works.
+Agents that extend themselves. Kestrel finds or builds the tool it is missing and keeps it for next time, delegating every code change to a coding sub-agent.
 
-`OpenClaw` `MCP` `Claude Code`
+Cosmo ran around the clock on **AWS EC2**: 30-minute heartbeat, website health checks, cron daily digest, Vercel deployment monitoring, team Telegram channel. It repaired a production site end to end unattended: detected the outage, spun up a coding agent, diagnosed, fixed, reviewed, redeployed.
+
+`OpenClaw` `MCP` `Claude Code` `AWS EC2` `cron`
 
 ### 🏛️ [Socrates-Qwen3-8B](https://huggingface.co/AthrvShrn/Socrates-Qwen3-8B)
 
-A Qwen3-8B fine-tune that reasons Socratically in its `<think>` trace — clarify the question, define terms, test counterexamples — before answering with stated confidence, or admitting the question can't be settled. Hand-written training set, held-out split, measured before-vs-after. [Quantized builds](https://huggingface.co/AthrvShrn/Socrates-Qwen3-8B-GGUF) run in one command.
+QLoRA fine-tune of Qwen3-8B that reasons Socratically inside its `<think>` trace: clarify the question, define terms, test counterexamples, then answer with stated confidence. 136 hand-authored training examples, 109 train / 27 held out, [published openly as a dataset](https://huggingface.co/datasets/AthrvShrn/Socratic-Reasoning). [Quantized builds](https://huggingface.co/AthrvShrn/Socrates-Qwen3-8B-GGUF) run in one command, 400+ downloads a month.
 
 `QLoRA` `Unsloth` `GGUF` `Ollama`
 
@@ -50,7 +60,7 @@ A Qwen3-8B fine-tune that reasons Socratically in its `<think>` trace — clarif
 
 ## Writing
 
-**[Building Software That Isn't Just AI Slop](https://github.com/Atrv-Shrn/Atrvs-SDD)** — the spec-driven method I use to ship working software with coding agents. Four principles, and why the winning setup is the boring one.
+**[Building Software That Isn't Just AI Slop](https://github.com/Atrv-Shrn/Atrvs-SDD)**: the spec-driven method I use to ship working software with coding agents. Four principles, and why the winning setup is the boring one.
 
 ---
 
@@ -60,14 +70,16 @@ A Qwen3-8B fine-tune that reasons Socratically in its `<think>` trace — clarif
 |---|---|
 | **Agents** | LangGraph · LangChain · MCP · tool design & guardrails · human-in-the-loop |
 | **RAG** | LlamaIndex · Qdrant · Redis · hybrid search · reranking · incremental ingestion |
-| **Evals & observability** | Langfuse · RAGAS · golden sets · LLM-as-judge |
+| **Automation** | n8n · webhooks · cron · scheduled agents |
+| **Testing & observability** | Langfuse · RAGAS · golden sets · adversarial testing |
 | **Serving & infra** | Python · FastAPI · Docker · GitHub Apps & webhooks |
+| **Deployment & ops** | AWS EC2 · Linux server admin · cron · Vercel · health checks & automated recovery |
 | **Fine-tuning** | QLoRA (Unsloth) · GGUF export · Ollama |
 
 ---
 
 ## Reach me
 
-[Email](mailto:atharvasheoran@gmail.com) · [LinkedIn](https://www.linkedin.com/in/atharva-sheoran/) · [Hugging Face](https://huggingface.co/AthrvShrn)
+[Email](mailto:atharvasheoran@gmail.com) · [Hugging Face](https://huggingface.co/AthrvShrn)
 
 <sub>Self-taught. Every project above was built independently.</sub>
